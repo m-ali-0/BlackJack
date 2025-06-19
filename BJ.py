@@ -6,7 +6,10 @@ values = {
     '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
     '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10, 'A': 11
 }
-
+call = {
+    'J' : 'Jack', 'Q' : 'Queen', 'K': 'King', 'A': 'Ace', '2': '2', '3': '3', 
+    '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9', '10': '10'
+}
 
 class Deck:
     def __init__(self):
@@ -29,8 +32,26 @@ def hand_value(hand):
         aces -= 1
     return value
 
-def print_hand(hand, who):
-    print(f"{who}'s hand: {hand} (value: {hand_value(hand)})")
+def handToString(hand):
+    res = ''
+    for card in hand:
+        res += f'{call[card[0]]} of {card[1]}'
+        if card != hand[-1]:
+            res += ', '
+    return res
+    
+
+def print_hand(hand, who = 'Dealer'):
+    if who == 'P':
+        print(f"Your hand: {handToString(hand)} (value: {hand_value(hand)})")
+    else:
+        print(f"Dealer's hand: {handToString(hand)} (value: {hand_value(hand)})")
+    
+def get_answer(forw):
+    if forw == 'hs':
+        return input("Hit or Stand? ").lower()
+    if forw == 'continue':
+        return True if input("Wanna play more?(yes or no): ")=='yes' else False 
 
 
 def play_blackjack():
@@ -38,14 +59,14 @@ def play_blackjack():
     player = [deck.deal_card(), deck.deal_card()]
     dealer = [deck.deal_card(), deck.deal_card()]
 
-    print_hand(player, "Player")
-    print(f"Dealer's hand: [{dealer[0]}, ('?', '?')]")
+    print_hand(player, "P") #######
+    print(f"Dealer's hand: {call[dealer[0][0]]} of {dealer[0][1]}, ()?()")
 
     while hand_value(player) < 21:
-        move = input("Hit or Stand? ").lower()
+        move = get_answer('hs')
         if move == 'hit':
             player.append(deck.deal_card())
-            print_hand(player, "Player")
+            print_hand(player, "P")
         else:
             break
 
@@ -53,10 +74,10 @@ def play_blackjack():
         print("Bust! You lose.")
         return
 
-    print_hand(dealer, "Dealer")
+    print_hand(dealer)
     while hand_value(dealer) < 17:
         dealer.append(deck.deal_card())
-        print_hand(dealer, "Dealer")
+        print_hand(dealer)
 
     pv = hand_value(player)
     dv = hand_value(dealer)
@@ -68,4 +89,17 @@ def play_blackjack():
     else:
         print("It's a tie!")
 
-play_blackjack()
+cont = True
+print('-------------------------------------')
+print('Hello! Wanna lose some money ha? xaxa\nWhy not? Go ahead!\nAnd don\'t forget to enjoy!')
+print('-------------------------------------')
+print('\n'*1)
+
+while cont:
+    play_blackjack()
+    cont = get_answer("continue")
+
+print('\n'*1)
+print('-------------------------------------')
+print('Thanks for playing! Hope you enjoyed!\nAnd see you later, alligator!')
+print('-------------------------------------')
