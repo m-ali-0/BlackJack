@@ -14,7 +14,7 @@ call = {
 
 
 
-def type_text(text, delay=0.005, newline = True, width = 100):
+def type_text(text, delay=0.03, newline = True, width = 100):
     if width:
         pad = (width - len(text)) // 2
         print(' ' * pad, end='') 
@@ -64,3 +64,19 @@ def get_answer(forw, pocket = None):
         type_text('Do you want to restart the game? 1.yes or 2.no : ', newline=False)
         return input().strip()
         
+
+def print_msg(txt):
+    if txt == 'hi':
+        type_text('-------------------------------------')
+        type_text('Hello! Wanna lose some money ha? xaxa')
+        type_text('Why not? Go ahead!')
+        type_text('And don\'t forget to enjoy!')
+        type_text('-------------------------------------')
+        print('\n')
+    else:
+        print('\n'*1)
+        type_text('-------------------------------------')
+        type_text('Thanks for playing! Hope you enjoyed!')
+        type_text('And see you later, alligator!')
+        type_text('-------------------------------------')
+

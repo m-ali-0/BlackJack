@@ -1,7 +1,5 @@
 import Utils
 
-
-
 class Player:
     def __init__(self, name, deck, pocket = 1000, bet = 0):
         self.name = name
