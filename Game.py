@@ -1,29 +1,4 @@
-import secrets, time, Utils, Player
-delay = .4
-
-
-class Deck:
-    def __init__(self, num_decks=6):
-        self.cards = []
-        self.num_decks = num_decks
-        self._reset_deck()
-        
-    def _reset_deck(self):
-        self.cards = [(rank, suit) for _ in range(self.num_decks) for suit in Utils.suits for rank in Utils.ranks]
-        self.shuffle()
-    
-    def shuffle(self):
-        for i in range(len(self.cards) - 1, 0, -1):
-            j = secrets.randbelow(i + 1)
-            self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
-            
-    def deal_card(self):
-        if len(self.cards) < self.num_decks * 52 * 0.25: 
-            Utils.type_text("Shuffling cards...", delay=0.02)
-            self._reset_deck()
-        return self.cards.pop()
-    
- 
+import Utils
 
 def reveal(player, dealer):
     if player.has_blackjack() and dealer.has_blackjack():
@@ -46,14 +21,7 @@ def reveal(player, dealer):
     return False
 
 
-    
-
-deck = Deck()
-player = Player.Player("Player",deck)
-dealer = Player.Player('Dealer',deck)
-
-
-def play_blackjack():
+def play_blackjack(player, dealer, deck):
     player.give_hand(deck)
     dealer.give_hand(deck)
     
@@ -118,45 +86,3 @@ def play_blackjack():
         Utils.type_text("You're out of money. Game over!")
         return False
     return True
-
-
-def print_msg(txt):
-    if txt == 'hi':
-        Utils.type_text('-------------------------------------')
-        Utils.type_text('Hello! Wanna lose some money ha? xaxa')
-        Utils.type_text('Why not? Go ahead!')
-        Utils.type_text('And don\'t forget to enjoy!')
-        Utils,Utils.type_text('-------------------------------------')
-        print('\n')
-    else:
-        print('\n'*1)
-        Utils.type_text('-------------------------------------')
-        Utils.type_text('Thanks for playing! Hope you enjoyed!')
-        Utils.type_text('And see you later, alligator!')
-        Utils.type_text('-------------------------------------')
-
-
-def main():
-    cont = True
-    print_msg('hi')
-    while cont:
-        if not play_blackjack():
-            if Utils.get_answer('restart') == '1':
-                player.pocket = 1000
-                cont = True
-                Utils.type_text('--------- Restarted with $1000 ---------')
-                continue
-            else:
-                break
-             
-        cont = Utils.get_answer("continue")
-        if cont:
-            Utils.type_text('----------------Sure!-----------------')   
-        
-    print_msg('bye')
-    
-try:
-    main()
-except KeyboardInterrupt as err:
-    Utils.type_text('Program stopped by user. Thanks for playing!')
-    exit()
